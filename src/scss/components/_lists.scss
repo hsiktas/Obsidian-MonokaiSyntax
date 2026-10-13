@@ -43,8 +43,11 @@ body .markdown-rendered li {
 
 /* Live Preview Lists */
 body .markdown-source-view.mod-cm6 {
-  /* Force indent guides width so they align perfectly with our 1.5em blocks in Edit Mode */
-  .cm-hmd-list-indent,
+  /*
+   * Each indent level is one .cm-indent (1.5em). The .cm-hmd-list-indent wrapper holds
+   * all levels of a line, so it must keep its natural width; fixing it to 1.5em collapses
+   * level 3+ onto level 2.
+   */
   .cm-indent {
     width: 1.5em;
     position: relative;
@@ -55,9 +58,9 @@ body .markdown-source-view.mod-cm6 {
     background: transparent;
   }
 
-  /* We found that .cm-hmd-list-indent is the CORRECT line wrapper, and .cm-indent is the WRONG one! */
-  .cm-hmd-list-indent::before {
-    /* User specifically requested 0.75em */
+  /* One guide per list indent level, centered in its 1.5em block */
+  .cm-hmd-list-indent .cm-indent::before {
+    display: block;
     left: 0.75em;
     border: none;
     background: transparent;
@@ -69,10 +72,10 @@ body .markdown-source-view.mod-cm6 {
     bottom: 0;
   }
 
-  /* Kill the wrong line which is generated on .cm-indent::before */
-  .cm-indent::before,
   .cm-indent::after,
-  .cm-hmd-list-indent::after {
+  .cm-hmd-list-indent::before,
+  .cm-hmd-list-indent::after,
+  :not(.cm-hmd-list-indent) > .cm-indent::before {
     display: none;
   }
 
